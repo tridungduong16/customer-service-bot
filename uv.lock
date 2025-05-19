@@ -2229,7 +2229,7 @@ requires-dist = [
     { name = "pydantic", specifier = "==2.10.4" },
     { name = "pyjwt", specifier = "==2.10.1" },
     { name = "pymongo", specifier = "==4.9.1" },
-    { name = "pymupdf", specifier = ">=1.25.5" },
+    { name = "pymupdf", specifier = "==1.25.5" },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-asyncio", specifier = ">=0.26.0" },
     { name = "pytest-playwright", specifier = ">=0.7.0" },

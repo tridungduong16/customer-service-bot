@@ -1,15 +1,3 @@
 .env
-src/database_handler/__pycache__/__init__.cpython-311.pyc
-src/database_handler/__pycache__/__init__.cpython-312.pyc
-src/database_handler/__pycache__/__init__.cpython-313.pyc
-src/database_handler/__pycache__/agent_profile.cpython-311.pyc
-src/database_handler/__pycache__/agent_profile.cpython-312.pyc
-src/database_handler/__pycache__/agent_profile.cpython-313.pyc
-src/database_handler/__pycache__/embedding_service.cpython-312.pyc
-src/database_handler/__pycache__/mongo_handler.cpython-311.pyc
-src/database_handler/__pycache__/mongo_handler.cpython-312.pyc
-src/database_handler/__pycache__/mongo_handler.cpython-313.pyc
-src/database_handler/__pycache__/qdrant_handler.cpython-312.pyc
-src/database_handler/__pycache__/qdrant_handler.cpython-313.pyc
-src/database_handler/__pycache__/qdrant_main.cpython-312.pyc
-src/database_handler/__pycache__/qdrant_main.cpython-313.pyc
+src/database_handler/__pycache__/*
+dataset/*
