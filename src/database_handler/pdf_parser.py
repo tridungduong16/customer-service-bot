@@ -5,9 +5,7 @@ def pdf_to_markdown(pdf_path, output_md, images_dir):
     doc = fitz.open(pdf_path)
     os.makedirs(images_dir, exist_ok=True)
     md_lines = []
-
     img_count = 0
-
     for page_num in range(doc.page_count):
         page = doc.load_page(page_num)
         text = page.get_text("text")  # plain text; for structured output: use 'dict' or 'blocks'
@@ -39,5 +37,4 @@ def pdf_to_markdown(pdf_path, output_md, images_dir):
 
     print(f"Markdown created at {output_md} with {img_count} images.")
 
-# Usage
 pdf_to_markdown("input.pdf", "output.md", "images")
