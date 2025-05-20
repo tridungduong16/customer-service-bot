@@ -16,28 +16,19 @@ from typing import List
 from sentence_transformers import SentenceTransformer
 # from flashrank.reranker import FlashrankRerank
 from flashrank import Ranker, RerankRequest
+from tqdm import tqdm 
 
+
+COLLECTION_NAME = "knowledgebase"
 
 class QdrantHandler:
     def __init__(self):
         """Initialize Qdrant client."""
         self.client = None
-        self.collection_name = app_config.QDRANT_COLLECTION_NAME
+        self.collection_name = COLLECTION_NAME
         self.vector_size = 768
         self.llm_model = SentenceTransformer("nomic-ai/nomic-embed-text-v1.5", trust_remote_code=True)
         self.reranker = Ranker(max_length=128)
-        # self.reranker = Ranker(model_name="rank_zephyr_7b_v1_full", max_length=5000) # adjust max_length based on your passage length
-        # self.reranker = FlashrankRerank(score_threshold = 0.8, top_n=3, model="ms-marco-MiniLM-L-12-v2")
-        # self.reranker = Ranker(model_name="rank-T5-flan")
-
-
-
-        # Initialize FlashrankRerank with proper configuration
-        # self.reranker = FlashrankRerank(
-        #     model="ms-marco-MiniLM-L-6-v2",  # Use a pre-trained model
-        #     top_n=3  # Number of documents to rerank
-        # )
-        # self.reranker.model_rebuild()  # Rebuild the model with the new configuration
 
     def get_embedding(self, text: str) -> List[float]:
         return self.llm_model.encode(text).tolist()
@@ -45,13 +36,11 @@ class QdrantHandler:
     def connect_to_database(self):
         """Establish connection to Qdrant database."""
         try:
-            # import pdb; pdb.set_trace()
             self.client = QdrantClient(
                 url=app_config.QDRANT_URL,
                 api_key=app_config.QDRANT_API_KEY,
                 prefer_grpc=False
             )
-            # import pdb; pdb.set_trace()
             logging.info("✅ Qdrant connection established")
             return True
         except Exception as e:
@@ -118,8 +107,9 @@ class QdrantHandler:
         """Process all markdown files in a directory."""
         points = []
         # next_id = self.get_next_doc_id(collection_name)
-        
-        for filename in os.listdir(directory_path):
+        # import pdb; pdb.set_trace()
+
+        for filename in tqdm(os.listdir(directory_path)):
             if filename.endswith('.md'):
                 file_path = os.path.join(directory_path, filename)
                 content = self.read_markdown_file(file_path)
@@ -157,9 +147,10 @@ class QdrantHandler:
             return False
 
         try:
+            # import pdb; pdb.set_trace()
             points = self.process_markdown_directory(directory_path, collection_name)
             logging.info(f"✅ Found {len(points)} markdown files to process")
-            import pdb; pdb.set_trace()
+            # import pdb; pdb.set_trace()
             success = True
             for point in points:
                 if not self.save_text_to_qdrant(
@@ -303,18 +294,12 @@ class QdrantHandler:
             }
             for doc in results
         ]
-
-        # Step 4: Run reranking
-        # import pdb; pdb.set_trace()
         rerank_request = RerankRequest(query=query, passages=passages)
         reranked = self.reranker.rerank(rerank_request)
         reranked = reranked[0:5]
-        # import pdb; pdb.set_trace()
         for i in reranked:
             print(i.get("text"))
             print("--------------------------------")
-        # import pdb; pdb.set_trace()
-        # Step 5: Format output
         final_results = [
             {
                 "score": item.get("score"),

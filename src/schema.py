@@ -10,6 +10,9 @@ class InitializeMessageRequest(BaseModel):
     name: str
 
 
+class UserQuestion(BaseModel):
+    question: str
+
 class AskResponse(BaseModel):
     response: str
     response_time: str
@@ -29,24 +32,7 @@ class AgentNameRequest(BaseModel):
     agent_name: str
 
 
-class UserThread(BaseModel):
-    user_id: str
-    thread_id: Optional[str]
-
-
 class Message(BaseModel):
     role: str
     content: str
-
-
-class UserThread(BaseModel):
-    user_id: str
-    thread_id: Optional[str] = "1234"
-    agent_name: Optional[str] = "MISS CHINA AI"
-
-
-class ConversationInfor(BaseModel):
-    user_thread_infor: UserThread
-    messages: List[Message]
-    created_at: Optional[str] = None
 
